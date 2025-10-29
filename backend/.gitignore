@@ -1,0 +1,38 @@
+# ===========================================
+# 🐍 PYTHON / FASTAPI BACKEND
+# ===========================================
+
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# Pytest / coverage / mypy
+.coverage
+.cache/
+pytest_cache/
+.mypy_cache/
+*.pyo
+
+# Build & distribution
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Local environment & config
+backend/.env
+.env
+.env.local
+.env.*.local
+
+# IDE / editor settings
+.vscode/
+.idea/
+*.swp
+
