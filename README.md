@@ -1,154 +1,126 @@
 # 📊 Stock Value at Risk (VaR) Analysis App
 
-This project is a simple **Stock Analysis Web App** that visualizes **historical returns** and calculates **Value at Risk (VaR)** using both **Historical** and **Parametric** methods.
+A simple web-based application for analyzing **stock risk** using **Value at Risk (VaR)** methods — both **Historical** and **Parametric**.
 
-Built with **Next.js + TypeScript + Recharts**, the app allows users to:
-1. View a **line chart** of stock historical returns  
-2. Display a **table** of Historical & Parametric VaR  
-3. Read a **textual analysis** describing the risk results  
+This app provides:
+1. 📈 Line chart of stock historical returns  
+2. 📊 Table of Historical & Parametric VaR results  
+3. 🧾 Automatic text description of risk analysis  
 
----
-
-## 🚀 Tech Stack
-
-| Layer | Technology |
-|-------|-------------|
-| Frontend | Next.js 14 (React + TypeScript) |
-| UI | Tailwind CSS + DaisyUI |
-| Charting | Recharts |
-| Backend API | (Optional) FastAPI / Flask (for VaR calculations) |
+Built with:
+- **Frontend:** Next.js + TypeScript + Recharts  
+- **Backend:** FastAPI + NumPy + Pandas + SciPy  
+- **Containerization:** Docker Compose  
 
 ---
 
-## 🧩 Folder Structure
+## 🚀 Quick Start (Docker Compose)
 
+You can run the entire application (frontend + backend) instantly using **Docker Compose**.
+
+### 🧩 Prerequisites
+- Docker & Docker Compose installed  
+  👉 [Download Docker Desktop](https://www.docker.com/products/docker-desktop)
+
+---
+
+### ⚙️ Step 1: Clone Repository
+```bash
+git clone https://github.com/DeklanMA/Test-Case-Stock-Var.git
+cd Test-Case-Stock-Var
+````
+
+---
+
+### ⚙️ Step 2: Run with Docker Compose
+
+```bash
+docker compose up --build
 ```
 
+This command will:
+
+* Build both the **frontend (Next.js)** and **backend (FastAPI)** images
+* Start the containers
+* Automatically link them via Docker network
+
+---
+
+### 🌐 Step 3: Open in Browser
+
+| Service               | URL                                                      |
+| --------------------- | -------------------------------------------------------- |
+| Frontend (Next.js)    | [http://localhost:3000](http://localhost:3000)           |
+| Backend API (FastAPI) | [http://localhost:8000/docs](http://localhost:8000/docs) |
+
+---
+
+## 📦 Project Structure
+
+```
 📦 stock-var-app
-├── src/
-│   ├── app/
-│   │   └── page.tsx          # Main Home Page
-│   ├── components/
-│   │   ├── Chart.tsx         # Line chart of stock returns
-│   │   ├── VarCard.tsx       # VaR results table
-│   │   └── VarAnalysis.tsx   # Text description of analysis
-│   ├── lib/
-│   │   └── api.ts            # Fetch helpers (getReturns, getVaR)
-│   └── styles/
-│       └── globals.css
-├── package.json
-├── tsconfig.json
-└── README.md
-
-````
-
----
-
-## ⚙️ Setup & Installation
-
-### 1️⃣ Clone Repository
-```bash
-git clone https://github.com/<your-username>/<your-repo-name>.git
-cd <your-repo-name>
-````
-
-### 2️⃣ Install Dependencies
-
-Make sure you have Node.js ≥ 18.
-
-```bash
-npm install
-```
-
-### 3️⃣ Run the Development Server
-
-```bash
-npm run dev
-```
-
-App will be available at **[http://localhost:3000](http://localhost:3000)**
-
----
-
-## 🔗 API Integration
-
-This app assumes you have two backend endpoints available:
-
-| Endpoint                    | Method | Description                                     |
-| --------------------------- | ------ | ----------------------------------------------- |
-| `/returns?symbol=AAPL`      | GET    | Returns historical stock returns (date, return) |
-| `/var?symbol=AAPL&level=95` | GET    | Returns calculated Historical & Parametric VaR  |
-
-Example API response for `/var`:
-
-```json
-{
-  "symbol": "AAPL",
-  "confidence_level": "95%",
-  "historical_VaR": -0.0235,
-  "parametric_VaR": -0.0210
-}
+├── docker-compose.yml
+├── frontend/
+│   ├── Dockerfile
+│   ├── package.json
+│   └── src/...
+└── backend/
+    ├── Dockerfile
+    ├── main.py
+    ├── requirements.txt
+    └── ...
 ```
 
 ---
 
-## 💻 Frontend Overview
+## 🐳 Docker Configuration
 
-### **Home Page (src/app/page.tsx)**
+### **docker-compose.yml**
 
-* Select stock symbol and confidence level
-* Fetches returns and VaR data from API
-* Renders chart, VaR table, and analysis text
+```yaml
+version: "3.9"
+services:
+  frontend:
+    container_name: var-frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:8000
+    depends_on:
+      - backend
+    restart: always
 
-### **Chart Component**
-
-Displays daily stock returns as a smooth line chart:
-
-```tsx
-<Chart data={returns} />
-```
-
-### **VarCard Component**
-
-Shows VaR results in tabular form:
-
-```tsx
-<VarCard data={varData} />
-```
-
-### **VarAnalysis Component**
-
-Generates automatic text description:
-
-```tsx
-<VarAnalysis data={varData} />
+  backend:
+    container_name: var-backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    restart: always
 ```
 
 ---
 
-## 🧠 Example Analysis Output
+## 🧠 Example Backend (FastAPI)
 
-> Pada tingkat kepercayaan 95%, Historical VaR sebesar -2.35% dan Parametric VaR sebesar -2.10%.
-> Ini menunjukkan bahwa potensi kerugian maksimum saham AAPL dalam satu hari perdagangan diperkirakan tidak akan melebihi 2.35% dari nilai investasinya.
-> Perbedaan kedua metode terjadi karena asumsi distribusi data return yang berbeda.
-
----
-
-## 🧮 Optional: Run Local API (FastAPI Example)
-
-If you want to serve your own VaR calculation backend:
-
-```bash
-pip install fastapi uvicorn numpy pandas scipy
-```
-
-Then create `main.py`:
+`backend/main.py`
 
 ```python
 from fastapi import FastAPI
-import pandas as pd, numpy as np, scipy.stats
+import numpy as np, pandas as pd, scipy.stats
 
 app = FastAPI()
+
+@app.get("/returns")
+def get_returns(symbol: str = "AAPL"):
+    np.random.seed(42)
+    dates = pd.date_range(end=pd.Timestamp.today(), periods=100)
+    returns = np.random.normal(0.001, 0.02, 100)
+    return [{"date": str(d.date()), "return": float(r)} for d, r in zip(dates, returns)]
 
 @app.get("/var")
 def get_var(symbol: str = "AAPL", level: int = 95):
@@ -164,30 +136,44 @@ def get_var(symbol: str = "AAPL", level: int = 95):
     }
 ```
 
-Run it:
+---
 
-```bash
-uvicorn main:app --reload
+## 🖥️ Frontend Preview
+
+When you open `http://localhost:3000`, the app shows:
+
+✅ **Line chart** of daily returns
+✅ **VaR table** (Historical & Parametric)
+✅ **Text analysis** describing risk
+
+Example output:
+
+```
+📈 Daily Returns (Chart)
+📊 Value at Risk Table
+🧾 Analysis:
+Pada tingkat kepercayaan 95%, Historical VaR sebesar -2.35% dan Parametric VaR sebesar -2.10%.
+Ini menunjukkan bahwa potensi kerugian maksimum saham AAPL dalam satu hari perdagangan
+diperkirakan tidak akan melebihi 2.35% dari nilai investasinya.
 ```
 
 ---
 
-## 🧩 Features Summary
+## 🧩 Environment Variables
 
-✅ Line chart of historical returns
-✅ VaR table (Historical & Parametric)
-✅ Auto-generated risk analysis text
-✅ Clean responsive UI with Tailwind + DaisyUI
-✅ Modular codebase (easy to extend for more models)
+| Variable              | Description                  | Default               |
+| --------------------- | ---------------------------- | --------------------- |
+| `NEXT_PUBLIC_API_URL` | Backend URL for API requests | `http://backend:8000` |
 
 ---
 
-## 🪄 Future Improvements
+## 🧱 Stopping the Containers
 
-* [ ] Add 99% VaR comparison chart
-* [ ] Include Monte Carlo simulation
-* [ ] Allow CSV upload for custom stock data
-* [ ] Export report as PDF
+To stop all running containers:
+
+```bash
+docker compose down
+```
 
 ---
 
