@@ -3,14 +3,16 @@
 A simple web-based application for analyzing **stock risk** using **Value at Risk (VaR)** methods — both **Historical** and **Parametric**.
 
 This app provides:
-1. 📈 Line chart of stock historical returns  
-2. 📊 Table of Historical & Parametric VaR results  
-3. 🧾 Automatic text description of risk analysis  
+
+1. 📈 Line chart of stock historical returns
+2. 📊 Table of Historical & Parametric VaR results
+3. 🧾 Automatic text description of risk analysis
 
 Built with:
-- **Frontend:** Next.js + TypeScript + Recharts  
-- **Backend:** FastAPI + NumPy + Pandas + SciPy  
-- **Containerization:** Docker Compose  
+
+* **Frontend:** React.js + TypeScript + Recharts
+* **Backend:** FastAPI + NumPy + Pandas + SciPy
+* **Containerization:** Docker Compose
 
 ---
 
@@ -19,16 +21,18 @@ Built with:
 You can run the entire application (frontend + backend) instantly using **Docker Compose**.
 
 ### 🧩 Prerequisites
-- Docker & Docker Compose installed  
+
+* Docker & Docker Compose installed
   👉 [Download Docker Desktop](https://www.docker.com/products/docker-desktop)
 
 ---
 
 ### ⚙️ Step 1: Clone Repository
+
 ```bash
 git clone https://github.com/DeklanMA/Test-Case-Stock-Var.git
 cd Test-Case-Stock-Var
-````
+```
 
 ---
 
@@ -40,7 +44,7 @@ docker compose up --build
 
 This command will:
 
-* Build both the **frontend (Next.js)** and **backend (FastAPI)** images
+* Build both the **frontend (React.js)** and **backend (FastAPI)** images
 * Start the containers
 * Automatically link them via Docker network
 
@@ -50,7 +54,7 @@ This command will:
 
 | Service               | URL                                                      |
 | --------------------- | -------------------------------------------------------- |
-| Frontend (Next.js)    | [http://localhost:3000](http://localhost:3000)           |
+| Frontend (React.js)   | [http://localhost:3000](http://localhost:3000)           |
 | Backend API (FastAPI) | [http://localhost:8000/docs](http://localhost:8000/docs) |
 
 ---
@@ -88,7 +92,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://backend:8000
+      - VITE_API_URL=http://backend:8000
     depends_on:
       - backend
     restart: always
@@ -161,9 +165,9 @@ diperkirakan tidak akan melebihi 2.35% dari nilai investasinya.
 
 ## 🧩 Environment Variables
 
-| Variable              | Description                  | Default               |
-| --------------------- | ---------------------------- | --------------------- |
-| `NEXT_PUBLIC_API_URL` | Backend URL for API requests | `http://backend:8000` |
+| Variable       | Description                  | Default               |
+| -------------- | ---------------------------- | --------------------- |
+| `VITE_API_URL` | Backend URL for API requests | `http://backend:8000` |
 
 ---
 
@@ -190,4 +194,4 @@ Institut Teknologi Nasional Bandung (ITENAS)
 
 MIT License © 2025 Deklan Malik Akbar
 
-```
+---
